@@ -1,4 +1,4 @@
-import { prepareInstructions } from "constants";
+import { prepareInstructions } from "../../constants";
 import React, { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import FileUploader from "~/components/FileUploader";
@@ -60,7 +60,7 @@ const Upload = () => {
       feedback: "",
     };
 
-    await kv.set(`resume${uuid}`, JSON.stringify(data));
+    await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
     setStatusText("Analyzing ...");
 
@@ -77,9 +77,10 @@ const Upload = () => {
         : feedback.message.content[0].text;
 
     data.feedback = JSON.parse(feedbackText);
-    await kv.set(`resume${uuid}`, JSON.stringify(data));
+    await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText("Analysis complete, redirecting ...");
     console.log(data);
+    navigate(`/resume/${uuid}`);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
